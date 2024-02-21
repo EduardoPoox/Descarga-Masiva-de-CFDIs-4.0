@@ -122,6 +122,7 @@ if(!empty($_POST)) {
     }else{
       echo json_response(array(
         'mensaje' => 'No se han encontrado CFDIs'
+        'sesion' => $descargaCfdi->obtenerSesion()
       ));          
     }
   }elseif($accion == 'buscar-emitidos') {
