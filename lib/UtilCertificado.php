@@ -17,7 +17,7 @@ class UtilCertificado {
     // Posible ruta en Windows: 'c:\OpenSSL-Win32\bin\openssl.exe'
     // Posible ruta en MAC/Linux: '/usr/bin/openssl'
     private static $openSslFile = 'C:\OpenSSL-Win32\bin\openssl.exe';
-
+ 
 
     public function loadFiles($cerFile, $keyFile, $keyPassword){
         if($cerFile && $keyFile && $keyPassword){
@@ -121,10 +121,39 @@ class UtilCertificado {
             true
         );
 
-        if($d) {
+        /**codigo agregado tomado de la version 3.3*/
+        if ($d && !empty($d['serialNumberHex'])){
+            $hex = $d['serialNumberHex'];
+            $num ='';
+            for ($i=0;$i<strlen($hex);$i+=2){
+                $num .= chr(hexdec(substr($hex, $i, 2)));
+            }
+            return $num;
+        }
+
+        /**codigo original comentado */
+        /**if($d) {
             $number = $d['serialNumber'];
 
             $hexvalues = array('0','1','2','3','4','5','6','7', '8','9','A','B','C','D','E','F');
+            $hexval = '';
+            while($number != '0'){
+                $hexval = $hexvalues[bcmod($number,'16')].$hexval;
+                $number = bcdiv($number,'16',0);
+            }
+            $number = '';
+            $len = strlen($hexval);
+            for($i=0; $i<$len;$i+=2){
+                $number .=  substr($hexval, $i+1, 1);
+            }
+
+            return $number;
+        }*/
+
+        /**codigo agregado tomado de la version 3.3*/
+        if($d && !empty($d['serialNumber'])) {
+            $number = $d['serialNumber'];
+            $hexvalues = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
             $hexval = '';
             while($number != '0'){
                 $hexval = $hexvalues[bcmod($number,'16')].$hexval;
@@ -180,6 +209,24 @@ class UtilCertificado {
 
         return null;
     }
+
+     /**codigo agregado tomado de la version 3.3*/
+    public function getKeyPemFileContent() {
+        return $this->keyPemFileContent;
+    }
+
+    public function getKeyPassword() {
+        return $this->keyPassword;
+    }
+
+    public function getCerFileContent() {
+        return $this->cerFileContent;
+    }
+
+    public function getKeyFileContent() {
+        return $this->keyFileContent;
+    }
+
 
     private static function der2pem($der_data) {
         return '-----BEGIN CERTIFICATE-----'.PHP_EOL

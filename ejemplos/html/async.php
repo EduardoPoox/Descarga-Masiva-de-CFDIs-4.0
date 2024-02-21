@@ -1,6 +1,6 @@
 <?php
- error_reporting(1);
- ini_set('display_errors', 1);
+// error_reporting(1);
+// ini_set('display_errors', 1);
 require dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'DescargaMasivaCfdi.php';
 require dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'UtilCertificado.php';
 
@@ -117,7 +117,7 @@ if(!empty($_POST)) {
       }
       echo json_response(array(
         'items' => $items,
-        // 'sesion' => $descargaCfdi->obtenerSesion()
+        'sesion' => $descargaCfdi->obtenerSesion()
       ));
     }else{
       echo json_response(array(
