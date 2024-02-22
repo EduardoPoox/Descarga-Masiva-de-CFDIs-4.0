@@ -121,7 +121,7 @@ if(!empty($_POST)) {
       ));
     }else{
       echo json_response(array(
-        'mensaje' => 'No se han encontrado CFDIs'
+        'mensaje' => 'No se han encontrado CFDIs',
         'sesion' => $descargaCfdi->obtenerSesion()
       ));          
     }
@@ -138,7 +138,7 @@ if(!empty($_POST)) {
       }
       echo json_response(array(
         'items' => $items,
-        // 'sesion' => $descargaCfdi->obtenerSesion()
+        'sesion' => $descargaCfdi->obtenerSesion()
       ));
     }else{
       echo json_response(array(
@@ -150,13 +150,13 @@ if(!empty($_POST)) {
 
     if(!empty($_POST['xml'])) {
       foreach ($_POST['xml'] as $folioFiscal => $url) {
-        // $descargaCfdi->guardarXml($url, $ruta, $folioFiscal);
+        $descargaCfdi->guardarXml($url, $ruta, $folioFiscal);
         $descarga->agregarXml($url, $rutaDescarga, $folioFiscal);
       }
     }
     if(!empty($_POST['acuse'])) {
       foreach ($_POST['acuse'] as $folioFiscal => $url) {
-        // $descargaCfdi->guardarAcuse($url, $ruta, $folioFiscal);
+        $descargaCfdi->guardarAcuse($url, $ruta, $folioFiscal);
         $descarga->agregarAcuse($url, $rutaDescarga, $folioFiscal);
       }
     }

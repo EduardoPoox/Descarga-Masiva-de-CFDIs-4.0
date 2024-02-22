@@ -6,6 +6,47 @@ function enableInputs() {
 	$('#main select, #main input, #main button').removeAttr('disabled');
 }
 
+/**Funcion agregada reciclada de la vesion 3.3 */
+function enableDownloadZIP(){
+	$('.classdownzip').css('display','inline');
+}
+
+function disableDownloadZIP(){
+	$('.classdownzip').hide();
+}
+
+/**Funcion agregada reciclada de la vesion 3.3  para la descarga de EXCEL*/
+var tableToExcel = (function(){
+	var uri ='data:application/vnd.ms-excel;base64,',
+					template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'
+					 				+ '<head><meta http-equiv="Content-type" content="text/html;charset=UTF-8" /><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>'
+					 				+ '</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+					 base64= function(s){
+						return window.btoa(unescape(encodeURIComponent(s)))
+					 },
+					 format = function(s, c) {
+						return s.replace(/{(\w+)}/g, function(m, p) {
+							return c[p];
+						})
+					};
+
+	return function(table, name){
+		var ctx = {
+            worksheet : name || 'Worksheet',
+            table : table.innerHTML
+        }
+		return uri + base64(format(template, ctx));
+	}
+})();
+
+$('.excel-export').on('click', function(){
+	var $this = $(this);
+	var table = $this.closest('.descarga-form').find('.table').get(0);
+	var fn = $this.attr('download');
+	$this.attr('href',tableToExcel(table, fn));
+});
+
+
 $('.login-form').on('submit', function() {
 	var form = $(this);
 	var formData = new FormData(form.get(0));
@@ -184,6 +225,12 @@ $('.descarga-form').on('submit', function() {
         }
     }).always(function() {
 		enableInputs();
+
+		/**para descargar tomado de la version 3.3*/
+		enableDownloadZIP();
+		setTimeout(function(){
+			$('.classdownzip').hide();
+		}, 15000);
 	});
 
     return false;

@@ -9,9 +9,10 @@ $maxDescargasSimultaneas = 10;
 $rutaDescarga = dirname(__FILE__).DIRECTORY_SEPARATOR.'descargas'.DIRECTORY_SEPARATOR;
 
 // Instanciar librería
-require 'DescargaMasivaCfdi.php';
+require '../lib/DescargaMasivaCfdi.php';
 $descargaCfdi = new DescargaMasivaCfdi();
 
+// escribir los datos del contribuyente
 $rfcStr = '';
 $contrasenaStr = '';
 
